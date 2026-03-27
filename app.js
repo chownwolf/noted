@@ -4,9 +4,7 @@
   const noteContentInput = document.getElementById('note-content');                                                                                                      
   const noteList = document.getElementById('note-list');
   const preview = document.getElementById('preview');
-  const title = noteTitleInput.value.trim();
-  const content = noteContentInput.value;
-  const tags = noteTagsInput.value.split(',').map(t => t.trim()).filter(t => t !== '');
+  
                                                                                                                                                                          
   // Load the list of notes when the page opens                                                                                                                          
   loadNotes();
