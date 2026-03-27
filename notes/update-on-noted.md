@@ -10,3 +10,10 @@ tags: ["update", "project"]
 - Tags for organization
 - Ctrl+S to save
 - Sidebar search
+
+## Why Markdown 
+
+**Default standard really. 
+
+
+## Let me know if you have questions or concerns. 
