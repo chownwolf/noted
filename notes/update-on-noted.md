@@ -13,7 +13,7 @@ tags: ["update", "project"]
 
 ## Why Markdown 
 
-**Default standard really. 
+**Default standard really.** 
 
 
 ## Let me know if you have questions or concerns. 
