@@ -4,7 +4,6 @@
   const noteTagsInput = document.getElementById('note-tags');
   const noteContentInput = document.getElementById('note-content');                                                                                                      
   const noteList = document.getElementById('note-list');
-  const preview = document.getElementById('preview');
   const searchInput = document.getElementById('search');
                                                                                                                                                                          
   // Load the list of notes when the page opens                                                                                                                          
@@ -39,11 +38,30 @@
     li.style.padding = '6px 8px';
     li.style.borderRadius = '4px';                                                                                                                                       
     li.style.cursor = 'pointer';
-                                                                                                                                                                         
+    
+    const info = document.createElement('div');
+    info.style.display = 'flex';                                                                                                                                         
+    info.style.flexDirection = 'column';
+    info.style.flex = '1';
+    
     const name = document.createElement('span');
     name.textContent = filename.replace('.md', '');                                                                                                                      
-    name.style.flex = '1';
-                                                                                                                                                                         
+    
+    const date = document.createElement('span');
+    date.style.fontSize = '11px';
+    date.style.color = '#666';
+    
+    fetch('/notes/' + filename)                                                                                                                                          
+      .then(function(response) {
+        return response.json();                                                                                                                                          
+      })
+      .then(function(data) {                                                                                                                                             
+        const match = data.content.match(/^---\n[\s\S]*?date:\s*(.+?)\n[\s\S]*?---/);
+        if (match) {                                                                                                                                                     
+          date.textContent = match[1].trim();                                                                                                                            
+        }                                                                                                                                                                
+      }); 
+
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = '×';                                                                                                                                         
     deleteBtn.style.background = 'transparent';
@@ -75,7 +93,9 @@
       }
     });                                                                                                                                                                  
    
-    li.appendChild(name);                                                                                                                                                
+    info.appendChild(name);
+    info.appendChild(date);
+    li.appendChild(info);
     li.appendChild(deleteBtn);
     noteList.appendChild(li);
   }
@@ -132,22 +152,6 @@
       });         
   }
 
-  function updatePreview() {                                                                                                                                             
-    const content = noteContentInput.value;
-    fetch('/preview', {                                                                                                                                                  
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content })
-    })                                                                                                                                                                   
-      .then(function(response) {
-        return response.json();                                                                                                                                          
-      })          
-      .then(function(data) {
-        preview.innerHTML = data.html;
-      });
-  }
-
-  noteContentInput.addEventListener('input', updatePreview);
 
   saveBtn.addEventListener('click', function() {
     const title = noteTitleInput.value.trim();
