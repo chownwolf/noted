@@ -31,25 +31,52 @@
     });
   });
 
-  function addNoteToSidebar(filename) {
+  function addNoteToSidebar(filename) {                                                                                                                                  
     const li = document.createElement('li');
-    li.textContent = filename.replace('.md', '');
-    li.style.cursor = 'pointer';                                                                                                                                         
+    li.style.display = 'flex';                                                                                                                                           
+    li.style.alignItems = 'center';
+    li.style.justifyContent = 'space-between';                                                                                                                           
     li.style.padding = '6px 8px';
     li.style.borderRadius = '4px';                                                                                                                                       
+    li.style.cursor = 'pointer';
                                                                                                                                                                          
-    li.addEventListener('click', function() {
-      openNote(filename);                                                                                                                                                
-    });           
-
+    const name = document.createElement('span');
+    name.textContent = filename.replace('.md', '');                                                                                                                      
+    name.style.flex = '1';
+                                                                                                                                                                         
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '×';                                                                                                                                         
+    deleteBtn.style.background = 'transparent';
+    deleteBtn.style.border = 'none';
+    deleteBtn.style.color = '#888';                                                                                                                                      
+    deleteBtn.style.cursor = 'pointer';
+    deleteBtn.style.fontSize = '16px';                                                                                                                                   
+    deleteBtn.style.padding = '0 4px';                                                                                                                                   
+    deleteBtn.style.display = 'none';
+                                                                                                                                                                         
     li.addEventListener('mouseover', function() {                                                                                                                        
       li.style.background = '#2a2d2e';
+      deleteBtn.style.display = 'inline';                                                                                                                                
     });                                                                                                                                                                  
-                  
+   
     li.addEventListener('mouseout', function() {                                                                                                                         
       li.style.background = 'transparent';
+      deleteBtn.style.display = 'none';
+    });                                                                                                                                                                  
+   
+    name.addEventListener('click', function() {                                                                                                                          
+      openNote(filename);
     });
 
+    deleteBtn.addEventListener('click', function(event) {                                                                                                                
+      event.stopPropagation();
+      if (confirm('Delete ' + filename.replace('.md', '') + '?')) {                                                                                                      
+        deleteNote(filename);
+      }
+    });                                                                                                                                                                  
+   
+    li.appendChild(name);                                                                                                                                                
+    li.appendChild(deleteBtn);
     noteList.appendChild(li);
   }
                                                                                                                                                                          
@@ -93,6 +120,17 @@
     noteTitleInput.focus();
   });
  
+  function deleteNote(filename) {                                                                                                                                        
+    fetch('/notes/' + filename, { method: 'DELETE' })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function() {
+        noteTitleInput.value = '';                                                                                                                                       
+        noteContentInput.value = '';
+        loadNotes();                                                                                                                                                     
+      });         
+  }
 
   function updatePreview() {                                                                                                                                             
     const content = noteContentInput.value;
