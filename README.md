@@ -45,7 +45,7 @@ Then open `http://localhost:3000` in your browser.
 ### Option A: Docker Compose (recommended)
 
 ```bash
-docker compose up
+docker compose up -d
 ```
 
 Open `http://localhost:3000`.
