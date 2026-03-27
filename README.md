@@ -15,9 +15,9 @@ A lightweight note-taking web app that **saves notes as Markdown (`.md`) files**
 - [`marked`](https://www.npmjs.com/package/marked) for Markdown → HTML preview
 - Vanilla HTML/CSS/JS frontend (`index.html`, `style.css`, `app.js`)
 
-## Getting started
+## Getting started running local on your system
 
-### Requirements
+### Requirements For Running Local
 
 - Node.js (LTS recommended)
 
@@ -45,7 +45,7 @@ Then open `http://localhost:3000` in your browser.
 ### Option A: Docker Compose (recommended)
 
 ```bash
-docker compose up --build
+docker compose up
 ```
 
 Open `http://localhost:3000`.
