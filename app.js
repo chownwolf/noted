@@ -183,5 +183,39 @@
       saveBtn.click();                                                                                                                                                        
     }             
   });
+  
+  const divider = document.getElementById('divider');
+  const editorBody = document.getElementById('editor-body');                                                                                                             
+   
+  let isDragging = false;                                                                                                                                                
+                  
+  divider.addEventListener('mousedown', function() {                                                                                                                     
+    isDragging = true;
+    document.body.style.cursor = 'col-resize';                                                                                                                           
+    document.body.style.userSelect = 'none';
+  });                                                                                                                                                                    
+   
+  document.addEventListener('mousemove', function(event) {                                                                                                               
+    if (!isDragging) return;
 
+    const rect = editorBody.getBoundingClientRect();                                                                                                                     
+    const offset = event.clientX - rect.left;
+    const total = rect.width;                                                                                                                                            
+                  
+    const editorPercent = (offset / total) * 100;                                                                                                                        
+    const previewPercent = 100 - editorPercent;
+                                                                                                                                                                         
+    if (editorPercent < 20 || previewPercent < 20) return;                                                                                                               
+   
+    noteContentInput.style.flex = 'none';                                                                                                                                
+    noteContentInput.style.width = editorPercent + '%';
+    preview.style.flex = 'none';                                                                                                                                         
+    preview.style.width = previewPercent + '%';
+  });                                                                                                                                                                    
+                                                                                                                                                                         
+  document.addEventListener('mouseup', function() {
+    isDragging = false;                                                                                                                                                  
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
   
