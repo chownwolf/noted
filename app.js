@@ -1,6 +1,7 @@
   const newNoteBtn = document.getElementById('new-note-btn');                                                                                                            
   const saveBtn = document.getElementById('save-btn');
   const noteTitleInput = document.getElementById('note-title');
+  const noteTagsInput = document.getElementById('note-tags');
   const noteContentInput = document.getElementById('note-content');                                                                                                      
   const noteList = document.getElementById('note-list');
   const preview = document.getElementById('preview');
@@ -105,6 +106,7 @@
   saveBtn.addEventListener('click', function() {
     const title = noteTitleInput.value.trim();
     const content = noteContentInput.value;
+    const tags = noteTagsInput.value.split(',').map(t => t.trim()).filter(t => t !== '');
                                                                                                                                                                          
     if (title === '') {
       alert('Please add a title before saving.');                                                                                                                        

@@ -32,10 +32,23 @@ const express = require('express');
   }); 
   // POST /notes — save a new or updated note                                                                                                                            
   app.post('/notes', function(req, res) {
-    const { title, content } = req.body;                                                                                                                                 
+    const { title, content, tags } = req.body;
     const filename = title.trim().replace(/\s+/g, '-').toLowerCase() + '.md';
     const filepath = path.join(NOTES_DIR, filename);                                                                                                                     
-    fs.writeFileSync(filepath, content, 'utf8');
+    const safeTitle = typeof title === 'string' ? title.trim() : '';
+    const tagList = Array.isArray(tags) ? tags : [];
+    const normalizedTags = tagList
+      .filter(t => typeof t === 'string')
+      .map(t => t.trim())
+      .filter(t => t !== '');
+
+    let fileContent = typeof content === 'string' ? content : '';
+    if (normalizedTags.length > 0) {
+      const yamlTags = normalizedTags.map(t => JSON.stringify(t)).join(', ');
+      fileContent = `---\ntitle: ${JSON.stringify(safeTitle)}\ntags: [${yamlTags}]\n---\n\n${fileContent}`;
+    }
+
+    fs.writeFileSync(filepath, fileContent, 'utf8');
     res.json({ filename });                                                                                                                                              
   });                                                                                                                                                                    
   
@@ -68,6 +81,9 @@ const express = require('express');
     res.json({ html });
   }); 
   // Static files served LAST so API routes take priority
+  app.get('/favicon.ico', function(req, res) {
+    res.status(204).end();
+  });
   app.use(express.static(__dirname));
   
   app.listen(3000, function() {                                                                                                                                          
