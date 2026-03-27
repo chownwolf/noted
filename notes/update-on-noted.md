@@ -4,7 +4,7 @@ tags: ["update", "project"]
 ---
 
 # Current Features
--Create, edit, delete notes                                                                                                                                           
+- Create, edit, delete notes                                                                                                                                           
 - Saves as .md files with frontmatter
 - Live Markdown preview                                                                                                                                                
 - Tags for organization
