@@ -5,6 +5,7 @@
   const noteContentInput = document.getElementById('note-content');                                                                                                      
   const noteList = document.getElementById('note-list');
   const searchInput = document.getElementById('search');
+  const preview = document.getElementById('preview');
                                                                                                                                                                          
   // Load the list of notes when the page opens                                                                                                                          
   loadNotes();
@@ -151,6 +152,24 @@
         loadNotes();                                                                                                                                                     
       });         
   }
+
+
+  function updatePreview() {
+    const content = noteContentInput.value;
+    fetch('/preview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content })
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        preview.innerHTML = data.html;
+      });
+  }
+
+  noteContentInput.addEventListener('input', updatePreview);
 
 
   saveBtn.addEventListener('click', function() {

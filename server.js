@@ -1,6 +1,7 @@
 const express = require('express');                                                                                                                                    
   const fs = require('fs');
   const path = require('path');
+  const { marked } = require('marked');
 
   const app = express();                                                                                                                                                 
   const NOTES_DIR = path.join(__dirname, 'notes');
@@ -22,7 +23,6 @@ const express = require('express');
   // GET /notes/:filename — return the content of one note                                                                                                               
   app.get('/notes/:filename', function(req, res) {                                                                                                                       
     const filepath = path.join(NOTES_DIR, req.params.filename);                                                                                                          
-    console.log('Requesting file:', filepath);  // add this line
     if (!fs.existsSync(filepath)) {                                                                                                                                      
       return res.status(404).json({ error: 'Note not found' });
     }                                                                                                                                                                    
@@ -35,17 +35,20 @@ const express = require('express');
     const filename = title.trim().replace(/\s+/g, '-').toLowerCase() + '.md';
     const filepath = path.join(NOTES_DIR, filename);                                                                                                                     
     const safeTitle = typeof title === 'string' ? title.trim() : '';
-    const tagList = Array.isArray(tags) ? tags : [];
-    const normalizedTags = tagList
+    const normalizedTags = (Array.isArray(tags) ? tags : [])
       .filter(t => typeof t === 'string')
       .map(t => t.trim())
       .filter(t => t !== '');
-
-    let fileContent = typeof content === 'string' ? content : '';
-    if (normalizedTags.length > 0) {
-      const yamlTags = normalizedTags.map(t => JSON.stringify(t)).join(', ');
-      fileContent = `---\ntitle: ${JSON.stringify(safeTitle)}\ntags: [${yamlTags}]\n---\n\n${fileContent}`;
-    }
+    const date = new Date().toISOString().split('T')[0];
+    const yamlTags = normalizedTags.map(t => JSON.stringify(t)).join(', ');
+    const safeContent = typeof content === 'string' ? content : '';
+    const fileContent =
+      `---\n` +
+      `title: ${JSON.stringify(safeTitle)}\n` +
+      `date: ${date}\n` +
+      `tags: [${yamlTags}]\n` +
+      `---\n\n` +
+      safeContent;
 
     fs.writeFileSync(filepath, fileContent, 'utf8');
     res.json({ filename });                                                                                                                                              
@@ -59,20 +62,6 @@ const express = require('express');
     fs.unlinkSync(filepath);
     res.json({ success: true });
   });  
-
-  app.post('/notes', function(req, res) {
-    const { title, content, tags } = req.body;                                                                                                                           
-    const filename = title.trim().replace(/\s+/g, '-').toLowerCase() + '.md';
-    const filepath = path.join(NOTES_DIR, filename);                                                                                                                     
-                  
-    const date = new Date().toISOString().split('T')[0];                                                                                                                 
-    const tagList = tags && tags.length > 0 ? '[' + tags.map(t => '"' + t + '"').join(', ') + ']' : '[]';
-                                                                                                                                                                         
-    const fileContent = `---\ntitle: ${title}\ndate: ${date}\ntags: ${tagList}\n---\n\n${content}`;                                                                      
-                                                                                                                                                                         
-    fs.writeFileSync(filepath, fileContent, 'utf8');                                                                                                                     
-    res.json({ filename });
-  });
 
   app.post('/preview', function(req, res) {                                                                                                                              
     const { content } = req.body;

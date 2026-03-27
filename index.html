@@ -19,28 +19,29 @@
         <input type="text" id="note-title" placeholder="Note title..." />
         <input type="text" id="note-tags" placeholder="Tags (comma separated)..." /> 
         
-        <div id="editor-body">                                                                                                                                                 
-            <textarea id="note-content" placeholder="Write your note here..."></textarea>                                                                                        
-            <div id="divider"></div>
-            <div id="legend">                                                                                                                                                    
-              <h3>Markdown</h3>
-              <table>                                                                                                                                                            
-                <tr><td><code># Heading 1</code></td><td>Large heading</td></tr>
-                <tr><td><code>## Heading 2</code></td><td>Medium heading</td></tr>                                                                                               
-                <tr><td><code>### Heading 3</code></td><td>Small heading</td></tr>
-                <tr><td><code>**bold**</code></td><td><strong>bold</strong></td></tr>                                                                                            
-                <tr><td><code>*italic*</code></td><td><em>italic</em></td></tr>                                                                                                  
-                <tr><td><code>`code`</code></td><td><code>inline code</code></td></tr>                                                                                           
-                <tr><td><code>- item</code></td><td>Bullet list</td></tr>                                                                                                        
-                <tr><td><code>1. item</code></td><td>Numbered list</td></tr>                                                                                                     
-                <tr><td><code>[text](url)</code></td><td>Link</td></tr>                                                                                                          
-                <tr><td><code>![alt](url)</code></td><td>Image</td></tr>                                                                                                         
-                <tr><td><code>---</code></td><td>Horizontal rule</td></tr>                                                                                                       
-                <tr><td><code>> text</code></td><td>Blockquote</td></tr>                                                                                                         
-                <tr><td><code>```code```</code></td><td>Code block</td></tr>                                                                                                     
-              </table>                                                                                                                                                           
-            </div>                                                                                                                                                               
-          </div> 
+      <div id="editor-body">                                                                                                                                                 
+          <textarea id="note-content" placeholder="Write your note here..."></textarea>                                                                                        
+          <div id="divider"></div>
+          <div id="legend">                                                                                                                                                    
+            <h3>Markdown</h3>
+            <table>                                                                                                                                                            
+              <tr><td><code># Heading 1</code></td><td>Large heading</td></tr>
+              <tr><td><code>## Heading 2</code></td><td>Medium heading</td></tr>                                                                                               
+              <tr><td><code>### Heading 3</code></td><td>Small heading</td></tr>
+              <tr><td><code>**bold**</code></td><td><strong>bold</strong></td></tr>                                                                                            
+              <tr><td><code>*italic*</code></td><td><em>italic</em></td></tr>                                                                                                  
+              <tr><td><code>`code`</code></td><td><code>inline code</code></td></tr>                                                                                           
+              <tr><td><code>- item</code></td><td>Bullet list</td></tr>                                                                                                        
+              <tr><td><code>1. item</code></td><td>Numbered list</td></tr>                                                                                                     
+              <tr><td><code>[text](url)</code></td><td>Link</td></tr>                                                                                                          
+              <tr><td><code>![alt](url)</code></td><td>Image</td></tr>                                                                                                         
+              <tr><td><code>---</code></td><td>Horizontal rule</td></tr>                                                                                                       
+              <tr><td><code>> text</code></td><td>Blockquote</td></tr>                                                                                                         
+              <tr><td><code>```code```</code></td><td>Code block</td></tr>                                                                                                     
+           </table>                                                                                                                                                           
+         </div>                                                                                                                                                               
+         <button id="save-btn">Save</button> 
+        </div> 
   
       <script src="app.js"></script>                                                                                                                                     
     </body>       
