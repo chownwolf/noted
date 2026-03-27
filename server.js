@@ -48,6 +48,20 @@ const express = require('express');
     res.json({ success: true });
   });  
 
+  app.post('/notes', function(req, res) {
+    const { title, content, tags } = req.body;                                                                                                                           
+    const filename = title.trim().replace(/\s+/g, '-').toLowerCase() + '.md';
+    const filepath = path.join(NOTES_DIR, filename);                                                                                                                     
+                  
+    const date = new Date().toISOString().split('T')[0];                                                                                                                 
+    const tagList = tags && tags.length > 0 ? '[' + tags.map(t => '"' + t + '"').join(', ') + ']' : '[]';
+                                                                                                                                                                         
+    const fileContent = `---\ntitle: ${title}\ndate: ${date}\ntags: ${tagList}\n---\n\n${content}`;                                                                      
+                                                                                                                                                                         
+    fs.writeFileSync(filepath, fileContent, 'utf8');                                                                                                                     
+    res.json({ filename });
+  });
+
   app.post('/preview', function(req, res) {                                                                                                                              
     const { content } = req.body;
     const html = marked(content);

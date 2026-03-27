@@ -3,6 +3,10 @@
   const noteTitleInput = document.getElementById('note-title');
   const noteContentInput = document.getElementById('note-content');                                                                                                      
   const noteList = document.getElementById('note-list');
+  const preview = document.getElementById('preview');
+  const title = noteTitleInput.value.trim();
+  const content = noteContentInput.value;
+  const tags = noteTagsInput.value.split(',').map(t => t.trim()).filter(t => t !== '');
                                                                                                                                                                          
   // Load the list of notes when the page opens                                                                                                                          
   loadNotes();
@@ -42,24 +46,46 @@
     noteList.appendChild(li);
   }
                                                                                                                                                                          
-  function openNote(filename) {
-    fetch('/notes/' + filename)                                                                                                                                          
+  function openNote(filename) {                                                                                                                                          
+    fetch('/notes/' + filename)
       .then(function(response) {
         return response.json();
       })
       .then(function(data) {
-        noteTitleInput.value = filename.replace('.md', '');
-        noteContentInput.value = data.content;                                                                                                                           
+        const raw = data.content;                                                                                                                                        
+        const frontmatterMatch = raw.match(/^---\n([\s\S]*?)\n---\n\n?/);
+                                                                                                                                                                         
+        if (frontmatterMatch) {
+          const frontmatter = frontmatterMatch[1];                                                                                                                       
+          const body = raw.slice(frontmatterMatch[0].length);
+                                                                                                                                                                         
+          const tagsMatch = frontmatter.match(/tags:\s*\[(.*?)\]/);                                                                                                      
+          if (tagsMatch) {                                                                                                                                               
+            const tags = tagsMatch[1].replace(/"/g, '').split(',').map(t => t.trim()).filter(t => t !== '');                                                             
+            noteTagsInput.value = tags.join(', ');                                                                                                                       
+          } else {
+            noteTagsInput.value = '';                                                                                                                                    
+          }       
+
+          noteTitleInput.value = filename.replace('.md', '');                                                                                                            
+          noteContentInput.value = body;
+        } else {                                                                                                                                                         
+          noteTitleInput.value = filename.replace('.md', '');
+          noteContentInput.value = raw;
+          noteTagsInput.value = '';                                                                                                                                      
+        }
+                                                                                                                                                                         
+        updatePreview();
       });
   }                                                                                                                                                                      
                   
-  newNoteBtn.addEventListener('click', function() {
-    noteTitleInput.value = '';
-    noteContentInput.value = '';                                                                                                                                         
+  newNoteBtn.addEventListener('click', function() {                                                                                                                      
+    noteTitleInput.value = '';                                                                                                                                           
+    noteContentInput.value = '';
+    noteTagsInput.value = '';                                                                                                                                            
     noteTitleInput.focus();
-  });                                                                                                                                                                    
-  
-  const preview = document.getElementById('preview');
+  });
+ 
 
   function updatePreview() {                                                                                                                                             
     const content = noteContentInput.value;
@@ -90,7 +116,7 @@
     fetch('/notes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content })                                                                                                                           
+      body: JSON.stringify({ title, content, tags })                                                                                                                           
     })
       .then(function(response) {                                                                                                                                         
         return response.json();
