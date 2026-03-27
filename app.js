@@ -5,7 +5,7 @@
   const noteContentInput = document.getElementById('note-content');                                                                                                      
   const noteList = document.getElementById('note-list');
   const preview = document.getElementById('preview');
-  
+  const searchInput = document.getElementById('search');
                                                                                                                                                                          
   // Load the list of notes when the page opens                                                                                                                          
   loadNotes();
@@ -23,6 +23,14 @@
       });
   }                                                                                                                                                                      
                   
+  searchInput.addEventListener('input', function() {
+    const searchValue = searchInput.value.toLowerCase();
+    const notes = document.querySelectorAll('#note-list li');
+    notes.forEach(function(note) {
+      note.style.display = note.textContent.toLowerCase().includes(searchValue) ? 'block' : 'none';
+    });
+  });
+
   function addNoteToSidebar(filename) {
     const li = document.createElement('li');
     li.textContent = filename.replace('.md', '');

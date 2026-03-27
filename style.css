@@ -121,4 +121,14 @@
     padding-bottom: 8px;                                                                                                                                                 
     outline: none;                                                                                                                                                       
   }
-    
+  
+  #search {       
+    background: #3c3c3c;                                                                                                                                                 
+    border: none;
+    border-radius: 4px;                                                                                                                                                  
+    padding: 6px 8px;                                                                                                                                                    
+    color: #d4d4d4;
+    font-size: 13px;                                                                                                                                                     
+    outline: none;
+    width: 100%;                                                                                                                                                         
+  }
