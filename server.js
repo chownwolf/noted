@@ -4,7 +4,6 @@ const express = require('express');
 
   const app = express();                                                                                                                                                 
   const NOTES_DIR = path.join(__dirname, 'notes');
-  const { marked } = require('marked');
                                                                                                                                                                          
   // Make sure the notes folder exists                                                                                                                                   
   if (!fs.existsSync(NOTES_DIR)) {
