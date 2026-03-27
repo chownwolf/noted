@@ -1,5 +1,5 @@
 ---
-title: "Update on noted"
+title: "update-on-noted"
 tags: ["update", "project"]
 ---
 
