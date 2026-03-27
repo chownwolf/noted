@@ -1,0 +1,9 @@
+services:
+  noted:
+    build: .
+    container_name: noted
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./notes:/app/notes
+    restart: unless-stopped

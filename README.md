@@ -35,12 +35,50 @@ node server.js
 
 Then open `http://localhost:3000` in your browser.
 
+## Run with Docker
+
+### Requirements
+
+- Docker
+- Docker Compose (or `docker compose` plugin)
+
+### Option A: Docker Compose (recommended)
+
+```bash
+docker compose up --build
+```
+
+Open `http://localhost:3000`.
+
+To stop:
+
+```bash
+docker compose down
+```
+
+### Option B: Plain Docker
+
+Build the image:
+
+```bash
+docker build -t noted .
+```
+
+Run the container with notes persisted to your local `notes/` folder:
+
+```bash
+docker run --rm -p 3000:3000 -v "$(pwd)/notes:/app/notes" noted
+```
+
+Open `http://localhost:3000`.
+
 ## Where notes are saved
 
 - **Folder**: `notes/` (created automatically on first server start)
 - **Format**: Markdown files ending in `.md`
 - **Filename rule**: the note title is lowercased, spaces become `-`, and `.md` is appended  
   Example: `My First Note` → `my-first-note.md`
+- **Docker persistence**: `docker-compose.yml` mounts `./notes` to `/app/notes` inside the container
 
 ## API (for reference)
 
@@ -58,6 +96,9 @@ noted/
   style.css
   app.js
   server.js
+  Dockerfile
+  docker-compose.yml
+  .dockerignore
   notes/            # created automatically; your .md notes live here
   package.json
 ```
