@@ -125,3 +125,17 @@
         loadNotes();
       });                                                                                                                                                                
   });
+
+  document.addEventListener('keydown', function(event) {                                                                                                                 
+    if (event.ctrlKey && event.key === 's') {                                                                                                                            
+      event.preventDefault();                                                                                                                                            
+      const title = noteTitleInput.value.trim();
+      if (title === '') {                                                                                                                                                
+        alert('Please add a title before saving.');
+        return;                                                                                                                                                          
+      }
+      saveBtn.click();                                                                                                                                                        
+    }             
+  });
+
+  
